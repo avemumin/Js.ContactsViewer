@@ -1,4 +1,6 @@
-﻿namespace Js.ContactsViewer.Shared.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace Js.ContactsViewer.Shared.Models;
 
 public class SubCategory : BaseModel
 {
@@ -11,5 +13,6 @@ public class SubCategory : BaseModel
     public string SubCatDescription { get; set; } = string.Empty;
     public bool IsManualyEditAvail { get; set; } = false;
 
+    [JsonIgnore]
     public virtual ICollection<Contact> Contacts { get; set; }
 }

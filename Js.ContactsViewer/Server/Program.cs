@@ -2,12 +2,17 @@ global using Js.ContactsViewer.Shared.Models;
 using Js.ContactsViewer.Server.DataAccess;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+    //.AddJsonOptions(options =>
+    //{
+    //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    //});
 builder.Services.AddRazorPages();
 
 
