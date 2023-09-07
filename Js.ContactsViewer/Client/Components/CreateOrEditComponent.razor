@@ -1,0 +1,32 @@
+﻿
+<div>
+    @if (Id == null)
+    {
+        <div>
+            <PageTitle>Tworzenie nowego kontaktu</PageTitle>
+            <h3>Tworzenie kontaktu: </h3>
+        </div>
+    }
+    else
+    {
+        <div>
+            <PageTitle>Edycja kontaktu</PageTitle>
+            <h3>Edycja: @Email </h3>
+        </div>
+    }
+
+</div>
+
+@code {
+    [Parameter] public int? Id { get; set; }
+    [Parameter] public string Email { get; set; } = string.Empty;
+}
+
+@*Komentarz:
+    Tutaj powstał komeponent który dodaje nagłówek (strona tytułowa)
+    oraz informację o tym że jest tworzony nowy obiekt (w tym wypadku kontakt)
+    lub obiekt jest edytowany.
+    Ważną rzeczą dla komponentu jest wystawienie jego propercji (muszą być publiczne)
+    oraz opatrzone tagiem/argumentem [Parameter] dzięki temu w miejscu jego wykorzystywania
+    logika dzieje się po stronie komponentu co umożliwia jego wykorzystanie w potrzebnych miejscach
+*@

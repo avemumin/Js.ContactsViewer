@@ -1,0 +1,60 @@
+﻿@page "/contacts"
+@inject IContactService _contactService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Kontakty</PageTitle>
+
+<h3>Kontakty: </h3>
+<div>
+    <button class="btn btn-secondary" @onclick="CreateContact"><i class="oi oi-task"> Dodaj</i></button>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Imię</th>
+            <th scope="col">Nazwisko</th>
+            <th scope="col">Email</th>
+            <th scope="col">#Action#</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contact in _contactService.Contacts)
+        {
+            <tr>
+                <td>@contact.Name</td>
+                <td>@contact.LastName</td>
+                <td>@contact.Email</td>
+                <td>
+                    <button class="btn btn-info" @onclick="(()=> EditContact(contact.Id))"><i class="oi oi-info"></i> </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _contactService.GetContacts();
+
+    }
+
+    void CreateContact()
+    {
+        _navigationManager.NavigateTo("/contact");
+    }
+    void EditContact(int id)
+    {
+        _navigationManager.NavigateTo($"/contact/{id}");
+    }
+}
+
+
+ @*Komentarz: tutaj mamy do czynienia ze standardową lista bootstrapową bez fajerwerków
+     na co należy zwrócić uwagę to wstrzyknięcia (@inject)
+     dla IContactService odwołuje się do serwisu dla kontaktu poprzez interfejs
+     oraz NavigationManager wewnętrzny mechanizm Blazor dla przechodzenia między stronami
+     czyli nawigacją działa to tak że na referencji do NavigationManager wywołujemy metodę
+     NavigateTo("wskazanyAdres") który umożliwi przejście do podanego adresu
+ *@

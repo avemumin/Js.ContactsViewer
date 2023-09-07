@@ -1,0 +1,95 @@
+﻿@page "/contact"
+@page "/contact/{id:int}"
+
+@inject IContactService _contactService
+@inject NavigationManager _navigationManager
+
+<CreateOrEditComponent Id="Id" Email="@contact.Email" />
+
+
+<EditForm Model="contact">
+    <div>
+        <label for="firstname"><strong>Imię:</strong></label>
+        <InputText id="firstname" @bind-Value="contact.Name" class="form-control" placeholder="imię" />
+    </div>
+    <br />
+    <div>
+        <label for="lastname"><strong>Nazwisko:</strong></label>
+        <InputText id="lastname" @bind-Value="contact.LastName" class="form-control" placeholder="nazwisko" />
+    </div>
+    <br />
+    <div>
+        <label for="email"><strong>Email:</strong></label>
+        <InputText id="email" @bind-Value="contact.Email" class="form-control" placeholder="adres email" />
+    </div>
+    <br />
+    <div>
+        <label for="phone"><strong>Telefon:</strong></label>
+        <InputText id="phone" @bind-Value="contact.Phone" class="form-control" placeholder="numer telefonu" />
+    </div>
+    <br />
+    <div>
+        <label for="birthdate"><strong>Data urodzenia:</strong></label>
+        <InputDate id="birthdate" @bind-Value="contact.BirthDay" class="form-control" />
+    </div>
+    <br />
+
+
+    <div class="flex-row" style="margin:10px">
+
+        <button type="submit" class="btn btn-success" style="margin:10px">@btnText</button>
+
+        @if (Id != null)
+        {
+            <button type="button" class="btn btn-warning" style="margin:10px">Usuń</button>
+        }
+        <button type="button" class="btn btn-secondary" style="margin:10px" @onclick="GoBack">Wróć</button>
+
+    </div>
+</EditForm>
+
+
+
+@code {
+    [Parameter] public int? Id { get; set; }
+
+    Contact contact = new Contact { Category = new Category(), SubCategory = new SubCategory() };
+    string btnText = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        btnText = Id == null ? "Dodaj" : "Zapisz zmiany";
+        await _contactService.GetCategories();
+        await _contactService.GetSubCategories();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id == null)
+        {
+            contact.Category = _contactService.Categories[0];
+            contact.CategoryId = contact.Category.Id;
+
+            contact.SubCategory = _contactService.SubCategories[0];
+            contact.SubCategoryId = contact.SubCategory.Id;
+        }
+        else
+        {
+            contact = await _contactService.GetContactById((int)Id);
+        }
+    }
+
+    void GoBack()
+    {
+        _navigationManager.NavigateTo("/contacts");
+    }
+}
+
+
+@*Komentarz:
+ Aby wykorzystać jedną formatkę do kilku zadań w tym wypadku
+ dodawanie kontaktu oraz edycji wykorzystamy opcje rutingu dla strony
+ po stronie klienta @page "/nazwa" gdy chcemy dodac oraz @page "/nazwa/{id:int}" konkretnie wskazane
+ id kontaktu (z określonym typem)
+
+ *@
