@@ -11,14 +11,14 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col">Imię</th>
-            <th scope="col">Nazwisko</th>
-            <th scope="col">Email</th>
-            <th scope="col">#Action#</th>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Email</th>
+            <th>#Action#</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var contact in _contactService.Contacts)
+        @foreach (var contact in _contactsList)
         {
             <tr>
                 <td>@contact.Name</td>
@@ -33,11 +33,14 @@
 </table>
 
 @code {
-
+    private List<Contact> _contactsList = new List<Contact>();
     protected override async Task OnInitializedAsync()
     {
         await _contactService.GetContacts();
-
+        if (_contactService.Contacts?.Any() ?? false)
+        {
+            _contactsList = _contactService.Contacts;
+        }
     }
 
     void CreateContact()

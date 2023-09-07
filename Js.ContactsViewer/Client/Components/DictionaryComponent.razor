@@ -1,0 +1,37 @@
+﻿
+<div>
+    <GenericCollectionComponent MyCollection="Categories">
+        <Element Context="category">
+            <SimpleDictionaryRecordComponent Category="category" DeleteCategory="DeleteSelectedCategory" />
+        </Element>
+    </GenericCollectionComponent>
+
+</div>
+<ChoiceComponent @ref="_choice" OnAccept="Accept" OnCancel="Cancel">
+    <div> Czy usunąć rekord @_categoryToRemove?.CategoryName ?</div>
+</ChoiceComponent>
+
+@code {
+    ChoiceComponent? _choice;
+    Category? _categoryToRemove;
+
+    [Parameter] public List<Category> Categories { get; set; } = new List<Category>();
+    [Parameter] public List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
+
+    private async Task DeleteSelectedCategory(Category category)
+    {
+        _categoryToRemove = category;
+        _choice?.Show();
+    }
+    private void Accept()
+    {
+        //Categories.Remove(_categoryToRemove);
+        _choice?.Hide();
+        _categoryToRemove = null;
+    }
+    private void Cancel()
+    {
+        _choice?.Hide();
+        _categoryToRemove = null;
+    }
+}

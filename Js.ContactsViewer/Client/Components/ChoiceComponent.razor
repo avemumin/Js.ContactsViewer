@@ -1,0 +1,40 @@
+﻿﻿@if (_displayConfirmation)
+{
+    <div class="modal-backdrop show"></div>
+
+    <div class="modal fade show" id="exampleModal" tabindex="-1"
+         role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true" style="display:block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @Title
+                    </h5>
+                    <button @onclick="OnCancel" type="button" class="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @ChildContent
+                </div>
+                <div class="modal-footer">
+                    <button @onclick="OnCancel" type="button" class="btn btn-secondary">Cancel</button>
+                    <button @onclick="OnAccept" type="button" class="btn btn-primary">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool _displayConfirmation = false;
+    [Parameter] public string Title { get; set; } = "Potwierdź";
+    [Parameter] public required RenderFragment ChildContent { get; set; }
+    [Parameter] public EventCallback OnAccept { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    public void Show() => _displayConfirmation = true;
+    public void Hide() => _displayConfirmation = false;
+
+}

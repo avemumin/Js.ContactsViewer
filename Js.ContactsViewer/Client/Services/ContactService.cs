@@ -1,5 +1,4 @@
-﻿using Js.ContactsViewer.Shared.Models;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
 
 namespace Js.ContactsViewer.Client.Services;
@@ -16,15 +15,7 @@ public class ContactService : IContactService
     }
 
     public List<Contact> Contacts { get; set; } = new List<Contact>();
-    public List<Category> Categories { get; set; } = new List<Category>();
-    public List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
-
-    public async Task GetCategories()
-    {
-        var result = await _httpClient.GetFromJsonAsync<List<Category>>("api/categories");
-        if (result != null) Categories = result;
-    }
-
+    
     public async Task<Contact> GetContactById(int id)
     {
         var result = await _httpClient.GetFromJsonAsync<Contact>($"api/contacts/{id}");
@@ -38,9 +29,4 @@ public class ContactService : IContactService
             Contacts = result;
     }
 
-    public async Task GetSubCategories()
-    {
-        var result = await _httpClient.GetFromJsonAsync<List<SubCategory>>("api/subcategories");
-        if (result != null) SubCategories = result;
-    }
 }

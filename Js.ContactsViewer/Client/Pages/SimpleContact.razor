@@ -2,6 +2,8 @@
 @page "/contact/{id:int}"
 
 @inject IContactService _contactService
+@inject ICategoryService _categoryService
+@inject ISubCategoryService _subCategoryService
 @inject NavigationManager _navigationManager
 
 <CreateOrEditComponent Id="Id" Email="@contact.Email" />
@@ -59,18 +61,18 @@
     protected override async Task OnInitializedAsync()
     {
         btnText = Id == null ? "Dodaj" : "Zapisz zmiany";
-        await _contactService.GetCategories();
-        await _contactService.GetSubCategories();
+        await _categoryService.GetCategories();
+        await _subCategoryService.GetSubCategories();
     }
 
     protected override async Task OnParametersSetAsync()
     {
         if (Id == null)
         {
-            contact.Category = _contactService.Categories[0];
+            contact.Category = _categoryService.Categories[0];
             contact.CategoryId = contact.Category.Id;
 
-            contact.SubCategory = _contactService.SubCategories[0];
+            contact.SubCategory = _subCategoryService.SubCategories[0];
             contact.SubCategoryId = contact.SubCategory.Id;
         }
         else
@@ -90,6 +92,7 @@
  Aby wykorzystać jedną formatkę do kilku zadań w tym wypadku
  dodawanie kontaktu oraz edycji wykorzystamy opcje rutingu dla strony
  po stronie klienta @page "/nazwa" gdy chcemy dodac oraz @page "/nazwa/{id:int}" konkretnie wskazane
- id kontaktu (z określonym typem)
+ id kontaktu (z określonym typem).
+ Wiem margin:10 nie jest dobrym pomysłem w tym miejscu powinien być jak już w pliku css ale ...
 
  *@

@@ -1,0 +1,24 @@
+﻿@page "/slowniki"
+@inject ICategoryService _catService
+
+<PageTitle>Dodaj słowniki</PageTitle>
+ 
+<div>
+    <DictionaryComponent Categories="CategoriesList" />
+</div>
+
+
+
+@code {
+    
+    public List<Category> CategoriesList { get; set; } = new List<Category>();
+    protected override async Task OnInitializedAsync()
+    {
+        await _catService.GetCategories();
+        if(_catService?.Categories.Any() ?? false)
+        {
+            CategoriesList = _catService.Categories;
+        }
+    }
+    
+}

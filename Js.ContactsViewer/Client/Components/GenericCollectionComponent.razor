@@ -1,0 +1,38 @@
+﻿@typeparam TItem
+
+@if(MyCollection == null)
+{
+    if(NullTemplate is null)
+    {
+        <p>Ojć. Kolekcja jest nullem </p>
+    }
+    else
+    {
+        @NullTemplate
+    }
+}else if (!MyCollection.Any())
+{
+    if(EmptyCollectionTemplate is null)
+    {
+        <EmptyCollectionComponent/>
+    }
+    else
+    {
+        @EmptyCollectionTemplate
+    }
+}
+else
+{
+    @foreach (var e in MyCollection)
+    {
+        @Element(e)
+    }
+}
+
+
+@code {
+    [Parameter] public List<TItem> MyCollection { get; set; } = new List<TItem>();
+    [Parameter] public RenderFragment? NullTemplate { get; set; }
+    [Parameter] public RenderFragment? EmptyCollectionTemplate { get; set; }
+    [Parameter] public RenderFragment<TItem>? Element { get; set; }
+}

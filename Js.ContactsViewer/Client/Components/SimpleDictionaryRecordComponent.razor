@@ -1,0 +1,20 @@
+﻿
+
+<div>
+    <p>@Category.CategoryName</p>
+    <div>
+        <a class="btn btn-info">Edycja</a>
+        <button type="button" class="btn btn-danger"
+        @onclick="@(() => DeleteCategory.InvokeAsync(Category))">
+            Usuń kategorię
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Category Category { get; set; } = new Category();
+    [Parameter] public EventCallback<Category> DeleteCategory { get; set; }
+
+    [Parameter] public SubCategory SubCategory { get; set; } = new SubCategory();
+    [Parameter] public EventCallback<SubCategory> DeleteSubCategory { get; set; }
+}

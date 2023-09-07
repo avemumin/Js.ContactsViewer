@@ -15,8 +15,4 @@
     <ProjectReference Include="..\Shared\Js.ContactsViewer.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Shared\" />
-  </ItemGroup>
-
 </Project>
