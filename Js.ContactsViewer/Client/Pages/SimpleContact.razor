@@ -1,6 +1,6 @@
 ﻿@page "/contact"
 @page "/contact/{id:int}"
-
+@attribute [Authorize(Roles = "BOSS")]
 @inject IContactService _contactService
 @inject ICategoryService _categoryService
 @inject ISubCategoryService _subCategoryService
