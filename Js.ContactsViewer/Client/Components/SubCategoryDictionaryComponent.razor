@@ -1,4 +1,5 @@
 ﻿@inject ISubCategoryService _subCategoryService
+@inject NavigationManager _navigationaManager
 <div>
     <GenericCollectionComponent MyCollection="SubCategories">
         <Element Context="subcategory">
@@ -15,7 +16,7 @@
     ChoiceComponent? _choice;
     SubCategory? _subCategoryToRemove;
 
-    
+
     [Parameter] public List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
 
     private async Task DeleteSelectedCategory(SubCategory subCategory)
@@ -25,9 +26,12 @@
     }
     private void Accept()
     {
-        //Categories.Remove(_categoryToRemove);
+        if (_subCategoryToRemove != null)
+            _subCategoryService.DeleteSubCategory(_subCategoryToRemove.Id);
         _choice?.Hide();
         _subCategoryToRemove = null;
+        _navigationaManager.NavigateTo($"/categorydictionary/{false}", true);
+
     }
     private void Cancel()
     {

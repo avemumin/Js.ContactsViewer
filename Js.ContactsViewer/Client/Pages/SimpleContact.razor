@@ -39,22 +39,25 @@
 
     <div class="flex-row" style="margin:10px">
 
-        <button type="submit" class="btn btn-success" style="margin:10px">@btnText</button>
+        <button type="submit" class="btn btn-success" style="margin:10px" @onclick="(()=>AddNewContact(contact))">@btnText</button>
 
         @if (Id != null)
         {
-            <button type="button" class="btn btn-warning" style="margin:10px">Usuń</button>
+            <button type="button" class="btn btn-warning" style="margin:10px" @onclick="(()=>DeleteSelecedContact(contact))">Usuń</button>
         }
         <button type="button" class="btn btn-secondary" style="margin:10px" @onclick="GoBack">Wróć</button>
 
     </div>
 </EditForm>
 
-
+<ChoiceComponent @ref="_choice" OnAccept="Accept" OnCancel="Cancel">
+    <div> Czy usunąć kontakt @_contactToRemove?.Email ?</div>
+</ChoiceComponent>
 
 @code {
     [Parameter] public int? Id { get; set; }
-
+    ChoiceComponent? _choice;
+    Contact? _contactToRemove;
     Contact contact = new Contact { Category = new Category(), SubCategory = new SubCategory() };
     string btnText = string.Empty;
 
@@ -83,6 +86,33 @@
 
     void GoBack()
     {
+        GoToPreviousSite();
+    }
+    private void DeleteSelecedContact(Contact? contactSelected)
+    {
+        _contactToRemove = contactSelected;
+        _choice?.Show();
+    }
+    private void Accept()
+    {
+        //Categories.Remove(_categoryToRemove);
+        _choice?.Hide();
+        _contactToRemove = null;
+        GoToPreviousSite();
+    }
+    private void Cancel()
+    {
+        _choice?.Hide();
+        _contactToRemove = null;
+    }
+
+    private void AddNewContact(Contact? contactToAdd)
+    {
+        GoToPreviousSite();
+    }
+
+    private void GoToPreviousSite()
+    {
         _navigationManager.NavigateTo("/contacts");
     }
 }
@@ -94,5 +124,9 @@
  po stronie klienta @page "/nazwa" gdy chcemy dodac oraz @page "/nazwa/{id:int}" konkretnie wskazane
  id kontaktu (z określonym typem).
  Wiem margin:10 nie jest dobrym pomysłem w tym miejscu powinien być jak już w pliku css ale ...
-
+ Tutaj wywołujemy formatkę ChoiceComponent za pomocą referencji do niej
+ i przekazujemy informacje o obiekcie który chcemy w tym wypadku usunąć
+ następnie obsługujemy akcjie Accept/Cancel zdecydowałem się na ten wariant
+ bo bardziej mi się podoba niz wywołanie javascriptu i wołanie funkcji pokroju alert
+ ale też się da trzeba by dopisać jakąś metodę rozszerzającą i ją wywałać na akcji kliknięcia
  *@

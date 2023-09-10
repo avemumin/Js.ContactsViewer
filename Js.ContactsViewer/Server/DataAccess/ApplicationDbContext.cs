@@ -14,6 +14,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Category> Categories { get; set; }
     public DbSet<SubCategory> SubCategories { get; set; }
 
+ 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
@@ -44,6 +45,7 @@ public class ApplicationDbContext : DbContext
             .HasColumnType("date");
 
 
+   /*Category configuration*/
 
         modelBuilder.Entity<Category>()
             .Property(ct => ct.CategoryName)
@@ -54,6 +56,15 @@ public class ApplicationDbContext : DbContext
             .Property(ct => ct.CategoryDescription)
             .HasMaxLength(250);
 
+
+        modelBuilder.Entity<Category>()
+            .HasMany(e => e.Contacts)
+            .WithOne(d => d.Category)
+            .HasForeignKey(e => e.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+
+        /*SubCategory configuration*/
 
 
 
@@ -66,6 +77,15 @@ public class ApplicationDbContext : DbContext
             .Property(sct => sct.SubCatDescription)
             .HasMaxLength(50);
 
+
+        //obsluga usuwania subgategorii w momencie gdy
+        //ma relację jako FK do innego obiektu
+        //pozwoli to podczas usuwania ustawic NULL gdy pole jest nullable
+        modelBuilder.Entity<SubCategory>()
+            .HasMany(e => e.Contacts)
+            .WithOne(d => d.SubCategory)
+            .HasForeignKey(e => e.SubCategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         //fake data na potrzeby developerskie
 
@@ -132,7 +152,7 @@ public class ApplicationDbContext : DbContext
                       Phone = "22233344",
                       BirthDay = DateTime.Now.AddYears(-42).AddDays(-83),
                       Password = "sabina",
-                      SubCategoryId = 2,
+                      SubCategoryId = null,
                       CategoryId = 1
                   }
             );

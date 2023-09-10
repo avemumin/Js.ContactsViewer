@@ -15,7 +15,7 @@ public class ContactService : IContactService
     }
 
     public List<Contact> Contacts { get; set; } = new List<Contact>();
-    
+
     public async Task<Contact> GetContactById(int id)
     {
         var result = await _httpClient.GetFromJsonAsync<Contact>($"api/contacts/{id}");
@@ -30,3 +30,6 @@ public class ContactService : IContactService
     }
 
 }
+//tutaj mamy serwis dla kontaktu implementujący interfejs IContactService
+//następnie wywołujemy asynchroniczne metody celujące w 
+//odpowiednie metody Controllera dla ContactsController
