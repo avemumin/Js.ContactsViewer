@@ -25,3 +25,8 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStat
 builder.Services.AddAuthorizationCore();
 
 await builder.Build().RunAsync();
+
+
+//Po stronie serwera za autentykacje  i obs³ugê tokena jwt odpowiadaj¹ darmowe nugety
+//System.IdentityModel.Tokens.Jwt
+//Microsoft.AspNetCore.Authentication.JwtBearer

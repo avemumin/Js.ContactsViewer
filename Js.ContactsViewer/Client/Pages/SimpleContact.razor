@@ -10,6 +10,7 @@
 
 
 <EditForm Model="contact" OnValidSubmit="AddNewContact">
+    <DataAnnotationsValidator />
     <div>
         <label for="firstname"><strong>Imię:</strong></label>
         <InputText id="firstname" @bind-Value="contact.Name" class="form-control" placeholder="imię" />
@@ -28,6 +29,11 @@
     <div>
         <label for="phone"><strong>Telefon:</strong></label>
         <InputText id="phone" @bind-Value="contact.Phone" class="form-control" placeholder="numer telefonu" />
+    </div>
+    <br />
+    <div>
+        <label for="password"><strong>Hasło:</strong></label>
+        <InputText id="password" @bind-Value="contact.Password" class="form-control" placeholder="wpisz hasło" />
     </div>
     <br />
     <div>
@@ -66,6 +72,7 @@
         <button type="button" class="btn btn-secondary" style="margin:10px" @onclick="GoBack">Wróć</button>
 
     </div>
+    <ValidationSummary/>
 </EditForm>
 
 <ChoiceComponent @ref="_choice" OnAccept="Accept" OnCancel="Cancel">
@@ -128,7 +135,7 @@
     {
         if (Id == null)
         {
-            
+
             await _contactService.CreateContact(contact);
         }
         else
@@ -157,4 +164,7 @@
  następnie obsługujemy akcjie Accept/Cancel zdecydowałem się na ten wariant
  bo bardziej mi się podoba niz wywołanie javascriptu i wołanie funkcji pokroju alert
  ale też się da trzeba by dopisać jakąś metodę rozszerzającą i ją wywałać na akcji kliknięcia
+ dla autoryzacji mamy parametr/atrybut @attribute [Authorize(Roles = "BOSS")]
+ który łapie użytkownika w tej sytuacji z rola BOSS jeśli nie ma to sobie nie popatrzymy
+ nasz czegóły ani na akcje które tam można by wykonać
  *@

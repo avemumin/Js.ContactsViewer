@@ -50,38 +50,23 @@ namespace Js.ContactsViewer.Client.Authentication
                 userSession.ExpiryTimeStamp = DateTime.Now.AddSeconds(userSession.ExpiresIn);
                 await _sessionStorageService.SaveItemEncyptedAsync("UserSession", userSession);
             }
-            else
+            else //jesli sie wylogowujemy to warto wyczyścic pamięć sesji
             {
                 claimsPrincipal = _anonymous;
                 await _sessionStorageService.RemoveItemAsync("UserSession");
             }
-
+            //na koniec powiadomić o zmiane stanu atuentykacji
             NotifyAuthenticationStateChanged(Task.FromResult(
                 new AuthenticationState(claimsPrincipal)));
         }
 
-
-        public async Task<string> GetToken()
-        {
-            var result = string.Empty;
-            try
-            {
-                var userSession = await _sessionStorageService
-                    .ReadEncryptedItemAsync<UserSession>("UserSession");
-                if (userSession != null && DateTime.Now < userSession.ExpiryTimeStamp)
-                    result = userSession.Token;
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return result;
-        }
         private async Task<AuthenticationState> CatchOrNullUserSession()
         {
             return await Task.FromResult(new AuthenticationState(_anonymous));
         }
     }
 }
+
+//Proces autryzacji i autentykacji po stronie klienta wspomagają darmowe
+//nugety Microsoft.aspnetcore.components.authorization oraz
+//Blazored.SessionStorage se
