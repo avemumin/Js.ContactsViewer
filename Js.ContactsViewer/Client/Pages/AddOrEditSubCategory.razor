@@ -14,20 +14,24 @@ else
     <h3>Edycja:</h3>
 }
 
-<EditForm Model="SubCategory" OnSubmit="HandleSubmit">
+<EditForm Model="SubCategory" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator/>
     <div>
         <label for="subcatname"><strong>Nazwa:</strong></label>
         <InputText id="subcatname" @bind-Value="SubCategory.SubCatName" class="form-control" placeholder="podaj nazwę podkategorii" />
+        <ValidationMessage For="@(()=> SubCategory.SubCatName)"/>
     </div>
     <br />
     <div>
         <label for="subcatdescription"><strong>Opis:</strong></label>
         <InputText id="subcatdescription" @bind-Value="SubCategory.SubCatDescription" class="form-control" placeholder="dodaj opis" />
+        <ValidationMessage For="@(()=> SubCategory.SubCatDescription)" />
     </div>
     <br />
     <button type="submit" class="btn btn-primary">Zapisz</button>
     <br />
     <button type="button" class="btn-secondary" @onclick="GoBack">Wróć</button>
+   
 </EditForm>
 
 

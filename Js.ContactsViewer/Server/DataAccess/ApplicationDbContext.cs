@@ -50,7 +50,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Category>()
             .Property(ct => ct.CategoryName)
             .IsRequired()
-            .HasMaxLength(30);
+            .HasMaxLength(50);
 
         modelBuilder.Entity<Category>()
             .Property(ct => ct.CategoryDescription)
@@ -75,7 +75,7 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<SubCategory>()
             .Property(sct => sct.SubCatDescription)
-            .HasMaxLength(50);
+            .HasMaxLength(250);
 
 
         //obsluga usuwania subgategorii w momencie gdy
