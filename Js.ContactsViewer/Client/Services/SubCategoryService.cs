@@ -6,7 +6,7 @@ namespace Js.ContactsViewer.Client.Services
     public class SubCategoryService : ISubCategoryService
     {
         public List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
-
+        public SubCategory SubCategory { get; set; } = new SubCategory();
         private readonly HttpClient _httpClient;
         private readonly NavigationManager _navigationManager;
 
@@ -22,7 +22,12 @@ namespace Js.ContactsViewer.Client.Services
             if (result != null) 
                 SubCategories = result;
         }
-
+        public async Task GetSubCategoryById(int id)
+        {
+            var result = await _httpClient.GetFromJsonAsync<SubCategory>($"api/subcategories/{id}");
+            if (result != null)
+                SubCategory = result;
+        }
 
         public async Task CreateSubCategory(SubCategory subCategory)
         {
@@ -48,5 +53,7 @@ namespace Js.ContactsViewer.Client.Services
             if (resposne != null)
                 SubCategories = resposne;
         }
+
+       
     }
 }

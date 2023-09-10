@@ -3,7 +3,9 @@
 public interface ISubCategoryService
 {
     List<SubCategory> SubCategories { get; set; }
+    SubCategory SubCategory {get;set;}
     Task GetSubCategories();
+    Task GetSubCategoryById(int id);
 
 
 

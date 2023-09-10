@@ -1,0 +1,46 @@
+﻿@page "/addoreditsubcategory"
+@page "/addoreditsubcategory/{Id:int}"
+@inject NavigationManager _navigationManager
+@inject ISubCategoryService _subCategoryService
+<div>
+    <EditForm Model="subcategory"> 
+        <div>
+            <label for="subcategoryname"><strong>Nazwa:</strong></label>
+            <InputText id="subcategoryname" @bind-Value="subcategory.SubCatName" class="form-control" placeholder="podaj nazwę podkategorii" />
+        </div>
+
+        <div>
+            <label for="subcategorydescription"><strong>Nazwa:</strong></label>
+            <InputText id="subcategorydescription" @bind-Value="subcategory.SubCatDescription" class="form-control" placeholder="dodaj opis" />
+        </div>
+    </EditForm>
+</div>
+<br />
+<div class="flex-row" style="margin:10px">
+
+    @* <button type="submit" class="btn btn-success" style="margin:10px" @onclick="(()=>(contact))">@btnText</button> *@
+
+  
+    <button type="button" class="btn btn-secondary" style="margin:10px" @onclick="GoBack">Wróć</button>
+
+</div>
+
+@code {
+    [Parameter]public int? Id { get; set; }
+    SubCategory subcategory = new SubCategory();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _subCategoryService.GetSubCategoryById((int)Id);
+        if(_subCategoryService?.SubCategory != null)
+        {
+            subcategory = _subCategoryService.SubCategory;
+        }
+    }
+
+    private void GoBack()
+    {
+        _navigationManager.NavigateTo("/dictionaries");
+    }
+}

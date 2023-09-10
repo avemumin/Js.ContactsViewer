@@ -3,7 +3,11 @@
 <div>
     <GenericCollectionComponent MyCollection="SubCategories">
         <Element Context="subcategory">
-            <SimpleDictionaryRecordComponent IsCategoryContext="false" SubCategory="subcategory" DeleteSubCategory="DeleteSelectedCategory" />
+            <SimpleDictionaryRecordComponent IsCategoryContext="false" 
+                SubCategory="subcategory" 
+                DeleteSubCategory="DeleteSelectedCategory" 
+                EditSubCategory="EditSubCategory"
+                />
         </Element>
     </GenericCollectionComponent>
 
@@ -19,6 +23,12 @@
 
     [Parameter] public List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
 
+
+    private async Task EditSubCategory(SubCategory subCategory)
+    {
+        _subCategoryToRemove = subCategory;
+        _navigationaManager.NavigateTo($"/addoreditsubcategory/{_subCategoryToRemove.Id}");
+    }
     private async Task DeleteSelectedCategory(SubCategory subCategory)
     {
         _subCategoryToRemove = subCategory;
