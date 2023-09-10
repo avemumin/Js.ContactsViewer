@@ -14,7 +14,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Category> Categories { get; set; }
     public DbSet<SubCategory> SubCategories { get; set; }
 
- 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
@@ -33,7 +33,13 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Contact>()
             .Property(c => c.Phone)
-            .HasMaxLength(17);
+            .HasMaxLength(17)
+            .IsRequired(false);
+
+        modelBuilder.Entity<Contact>()
+        .Property(c => c.Password)
+        .HasMaxLength(50)
+        .IsRequired(false);
 
         modelBuilder.Entity<Contact>()
             .Property(c => c.Email)
@@ -45,7 +51,7 @@ public class ApplicationDbContext : DbContext
             .HasColumnType("date");
 
 
-   /*Category configuration*/
+        /*Category configuration*/
 
         modelBuilder.Entity<Category>()
             .Property(ct => ct.CategoryName)

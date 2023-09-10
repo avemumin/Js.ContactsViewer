@@ -12,7 +12,7 @@ namespace Js.ContactsViewer.Shared.Models;
 /// </summary>
 public class BaseModel
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity),Key()]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     [DataType(DataType.Date)]
     public DateTime CreatedOn { get; set; } = DateTime.Now;

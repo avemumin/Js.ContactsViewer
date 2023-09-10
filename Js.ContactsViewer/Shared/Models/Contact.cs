@@ -13,10 +13,10 @@ public class Contact : BaseModel
     public DateTime? BirthDay { get; set; } 
 
 
-    public Category? Category { get; set; }
+    public virtual Category? Category { get; set; }
     public int? CategoryId { get; set; }
 
-    public SubCategory? SubCategory { get; set; }
+    public virtual SubCategory? SubCategory { get; set; }
     public int? SubCategoryId { get; set; }
 }
 

@@ -9,7 +9,7 @@
 <CreateOrEditComponent Id="Id" Email="@contact.Email" />
 
 
-<EditForm Model="contact">
+<EditForm Model="contact" OnValidSubmit="AddNewContact">
     <div>
         <label for="firstname"><strong>Imię:</strong></label>
         <InputText id="firstname" @bind-Value="contact.Name" class="form-control" placeholder="imię" />
@@ -34,12 +34,30 @@
         <label for="birthdate"><strong>Data urodzenia:</strong></label>
         <InputDate id="birthdate" @bind-Value="contact.BirthDay" class="form-control" />
     </div>
+    <div>
+        <label>Kategoria</label>
+        <InputSelect @bind-Value="contact.CategoryId" class="form-select">
+            @foreach (var category in _categoryService.Categories)
+            {
+                <option value="@category.Id">@category.CategoryName</option>
+            }
+        </InputSelect>
+    </div>
+    <div>
+        <label>Podkategoria</label>
+        <InputSelect @bind-Value="contact.SubCategoryId" class="form-select">
+            @foreach (var subcategory in _subCategoryService.SubCategories)
+            {
+                <option value="@subcategory.Id">@subcategory.SubCatName</option>
+            }
+        </InputSelect>
+    </div>
     <br />
 
 
     <div class="flex-row" style="margin:10px">
 
-        <button type="submit" class="btn btn-success" style="margin:10px" @onclick="(()=>AddNewContact(contact))">@btnText</button>
+        <button type="submit" class="btn btn-success" style="margin:10px">@btnText</button>
 
         @if (Id != null)
         {
@@ -72,11 +90,11 @@
     {
         if (Id == null)
         {
-            contact.Category = _categoryService.Categories[1];
+            contact.Category = _categoryService.Categories[0];
             contact.CategoryId = contact.Category.Id;
 
-           contact.SubCategory = _subCategoryService.SubCategories[0];
-           contact.SubCategoryId = contact.SubCategory.Id;
+            contact.SubCategory = _subCategoryService.SubCategories[0];
+            contact.SubCategoryId = contact.SubCategory.Id;
         }
         else
         {
@@ -93,9 +111,9 @@
         _contactToRemove = contactSelected;
         _choice?.Show();
     }
-    private void Accept()
+    private async Task Accept()
     {
-        //Categories.Remove(_categoryToRemove);
+        await _contactService.DeleteContact(_contactToRemove.Id);
         _choice?.Hide();
         _contactToRemove = null;
         GoToPreviousSite();
@@ -106,8 +124,18 @@
         _contactToRemove = null;
     }
 
-    private void AddNewContact(Contact? contactToAdd)
+    private async Task AddNewContact()
     {
+        if (Id == null)
+        {
+            
+            await _contactService.CreateContact(contact);
+        }
+        else
+        {
+            await _contactService.UpdateContact(contact);
+        }
+
         GoToPreviousSite();
     }
 
