@@ -13,8 +13,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Contact> Contacts { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<SubCategory> SubCategories { get; set; }
-
-
+    public DbSet<UserAccount> UserAccounts { get; set; }
+    public DbSet<Role> Roles { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
@@ -92,6 +92,41 @@ public class ApplicationDbContext : DbContext
             .WithOne(d => d.SubCategory)
             .HasForeignKey(e => e.SubCategoryId)
             .OnDelete(DeleteBehavior.Restrict);
+
+
+        modelBuilder.Entity<UserAccount>()
+            .Property(u => u.UserName)
+            .IsRequired()
+            .HasMaxLength(30);
+
+        modelBuilder.Entity<UserAccount>()
+          .Property(u => u.Password)
+          .IsRequired()
+          .HasMaxLength(30);
+
+
+        modelBuilder.Entity<Role>()
+             .Property(r => r.Name)
+             .IsRequired();
+
+
+        modelBuilder.Entity<Role>()
+            .HasData(
+            new Role
+            {
+                Id = 1,
+                Name = "BOSS"
+            });
+
+        modelBuilder.Entity<UserAccount>()
+            .HasData(
+            new UserAccount
+            {
+                Id = 1,
+                UserName = "admin",
+                Password = "admin",
+                RoleId = 1
+            });
 
         //fake data na potrzeby developerskie
 

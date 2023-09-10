@@ -53,21 +53,21 @@ namespace Js.ContactsViewer.Server.Migrations
                             Id = 1,
                             CategoryDescription = "wszystko zwiazane z biznesem",
                             CategoryName = "Business",
-                            CreatedOn = new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4257)
+                            CreatedOn = new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4745)
                         },
                         new
                         {
                             Id = 2,
                             CategoryDescription = "Twoje prywaty",
                             CategoryName = "Private",
-                            CreatedOn = new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4260)
+                            CreatedOn = new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4748)
                         },
                         new
                         {
                             Id = 3,
                             CategoryDescription = "Gdy wybrane można utworzyć swoje widzi mi się",
                             CategoryName = "Inne",
-                            CreatedOn = new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4262)
+                            CreatedOn = new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4750)
                         });
                 });
 
@@ -126,9 +126,9 @@ namespace Js.ContactsViewer.Server.Migrations
                         new
                         {
                             Id = 1,
-                            BirthDay = new DateTime(1983, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4276),
+                            BirthDay = new DateTime(1983, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4763),
                             CategoryId = 1,
-                            CreatedOn = new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4272),
+                            CreatedOn = new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4759),
                             Email = "john.doe@kukuryku.pl",
                             LastName = "Doe",
                             Name = "John",
@@ -139,14 +139,42 @@ namespace Js.ContactsViewer.Server.Migrations
                         new
                         {
                             Id = 2,
-                            BirthDay = new DateTime(1981, 6, 19, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4284),
+                            BirthDay = new DateTime(1981, 6, 19, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4771),
                             CategoryId = 1,
-                            CreatedOn = new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4283),
+                            CreatedOn = new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4770),
                             Email = "sabinka.doe@kukuryku.pl",
                             LastName = "Doe",
                             Name = "Sabina",
                             Password = "sabina",
                             Phone = "22233344"
+                        });
+                });
+
+            modelBuilder.Entity("Js.ContactsViewer.Shared.Models.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedOn = new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4563),
+                            Name = "BOSS"
                         });
                 });
 
@@ -182,7 +210,7 @@ namespace Js.ContactsViewer.Server.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4100),
+                            CreatedOn = new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4729),
                             IsManualyEditAvail = false,
                             SubCatDescription = "Szef i wsio co z nim zwiazane",
                             SubCatName = "Szef"
@@ -190,10 +218,51 @@ namespace Js.ContactsViewer.Server.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4154),
+                            CreatedOn = new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4734),
                             IsManualyEditAvail = false,
                             SubCatDescription = "Co tam klient chciał",
                             SubCatName = "Klient"
+                        });
+                });
+
+            modelBuilder.Entity("Js.ContactsViewer.Shared.Models.UserAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserAccounts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedOn = new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4716),
+                            Password = "admin",
+                            RoleId = 1,
+                            UserName = "admin"
                         });
                 });
 
@@ -212,6 +281,17 @@ namespace Js.ContactsViewer.Server.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("SubCategory");
+                });
+
+            modelBuilder.Entity("Js.ContactsViewer.Shared.Models.UserAccount", b =>
+                {
+                    b.HasOne("Js.ContactsViewer.Shared.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Js.ContactsViewer.Shared.Models.Category", b =>

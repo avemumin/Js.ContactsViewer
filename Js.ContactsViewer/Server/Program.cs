@@ -1,8 +1,10 @@
 global using Js.ContactsViewer.Shared.Models;
+using Js.ContactsViewer.Server.Authentication;
 using Js.ContactsViewer.Server.DataAccess;
-using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,12 +16,32 @@ builder.Services.AddControllersWithViews();
     //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     //});
 builder.Services.AddRazorPages();
-
-
 //odczyt danych dla po³¹czenia z baz¹ SqlServer
 var cs = builder.Configuration.GetConnectionString("DefaultConnection");
 //rejestracja serwisu dla data access dla komunikacji EF z baz¹ danych
 builder.Services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(cs));
+
+
+//obsluga jwt bearer
+builder.Services.AddAuthentication(o =>
+{
+    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(o =>
+{
+    o.RequireHttpsMetadata = false;
+    o.SaveToken = true;
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtAuthenticationManager.JWT_SECURITY_KEY)),
+        ValidateIssuer = false,
+        ValidateAudience = false
+
+    };
+});
+builder.Services.AddScoped<UserAccountService>();
+
 
 
 var app = builder.Build();
@@ -43,6 +65,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();

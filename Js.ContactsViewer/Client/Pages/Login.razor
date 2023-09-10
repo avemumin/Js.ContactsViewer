@@ -1,0 +1,48 @@
+﻿@page "/login"
+@using System.Net;
+
+@inject IJSRuntime _js
+@inject HttpClient _http
+@inject AuthenticationStateProvider _authStateProvider
+@inject NavigationManager _navigationManager
+
+<div class="row">
+    <div class="col-lg-4 offset-lg-4 pt-lg-4 pb-4 border">
+        <div class="mb-3 text-center">
+            <h3>Login</h3>
+        </div>
+        <div class="mb-3">
+            <label>Imię:</label>
+            <input @bind="_loginRequest.UserName" class="form-control" placeholder="user name" />
+        </div>
+        <div class="mb-3">
+            <label>Haslo:</label>
+            <input @bind="_loginRequest.Password" class="form-control" placeholder="user password" />
+        </div>
+        <div class="mb-3 d-grid gap-2">
+            <button @onclick="Authenticate" class="btn btn-primary">Loguj</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginRequest _loginRequest = new LoginRequest();
+
+    private async Task Authenticate()
+    {
+        var loginReponse = await _http.PostAsJsonAsync<LoginRequest>("/api/Account/Login", _loginRequest);
+
+        if (loginReponse.IsSuccessStatusCode)
+        {
+            var userSession = await loginReponse.Content.ReadFromJsonAsync<UserSession>();
+            var customAuthStateProvider = (CustomAuthenticationStateProvider)_authStateProvider;
+            await customAuthStateProvider.UpdateAuthenticationState(userSession);
+            _navigationManager.NavigateTo("/", true);
+        }
+        else
+        {
+            await _js.InvokeVoidAsync("alert", "Błędny login lub hasło");
+            return;
+        }
+    }
+}

@@ -29,6 +29,20 @@ namespace Js.ContactsViewer.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SubCategories",
                 columns: table => new
                 {
@@ -42,6 +56,28 @@ namespace Js.ContactsViewer.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SubCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserAccounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAccounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserAccounts_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,18 +118,23 @@ namespace Js.ContactsViewer.Server.Migrations
                 columns: new[] { "Id", "CategoryDescription", "CategoryName", "CreatedOn" },
                 values: new object[,]
                 {
-                    { 1, "wszystko zwiazane z biznesem", "Business", new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4257) },
-                    { 2, "Twoje prywaty", "Private", new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4260) },
-                    { 3, "Gdy wybrane można utworzyć swoje widzi mi się", "Inne", new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4262) }
+                    { 1, "wszystko zwiazane z biznesem", "Business", new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4745) },
+                    { 2, "Twoje prywaty", "Private", new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4748) },
+                    { 3, "Gdy wybrane można utworzyć swoje widzi mi się", "Inne", new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4750) }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "CreatedOn", "Name" },
+                values: new object[] { 1, new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4563), "BOSS" });
 
             migrationBuilder.InsertData(
                 table: "SubCategories",
                 columns: new[] { "Id", "CreatedOn", "IsManualyEditAvail", "SubCatDescription", "SubCatName" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4100), false, "Szef i wsio co z nim zwiazane", "Szef" },
-                    { 2, new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4154), false, "Co tam klient chciał", "Klient" }
+                    { 1, new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4729), false, "Szef i wsio co z nim zwiazane", "Szef" },
+                    { 2, new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4734), false, "Co tam klient chciał", "Klient" }
                 });
 
             migrationBuilder.InsertData(
@@ -101,9 +142,14 @@ namespace Js.ContactsViewer.Server.Migrations
                 columns: new[] { "Id", "BirthDay", "CategoryId", "CreatedOn", "Email", "LastName", "Name", "Password", "Phone", "SubCategoryId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1983, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4276), 1, new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4272), "john.doe@kukuryku.pl", "Doe", "John", "1234", "12345678", 1 },
-                    { 2, new DateTime(1981, 6, 19, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4284), 1, new DateTime(2023, 9, 10, 19, 13, 9, 125, DateTimeKind.Local).AddTicks(4283), "sabinka.doe@kukuryku.pl", "Doe", "Sabina", "sabina", "22233344", null }
+                    { 1, new DateTime(1983, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4763), 1, new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4759), "john.doe@kukuryku.pl", "Doe", "John", "1234", "12345678", 1 },
+                    { 2, new DateTime(1981, 6, 19, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4771), 1, new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4770), "sabinka.doe@kukuryku.pl", "Doe", "Sabina", "sabina", "22233344", null }
                 });
+
+            migrationBuilder.InsertData(
+                table: "UserAccounts",
+                columns: new[] { "Id", "CreatedOn", "Password", "RoleId", "UserName" },
+                values: new object[] { 1, new DateTime(2023, 9, 10, 21, 26, 19, 380, DateTimeKind.Local).AddTicks(4716), "admin", 1, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contacts_CategoryId",
@@ -114,6 +160,11 @@ namespace Js.ContactsViewer.Server.Migrations
                 name: "IX_Contacts_SubCategoryId",
                 table: "Contacts",
                 column: "SubCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAccounts_RoleId",
+                table: "UserAccounts",
+                column: "RoleId");
         }
 
         /// <inheritdoc />
@@ -123,10 +174,16 @@ namespace Js.ContactsViewer.Server.Migrations
                 name: "Contacts");
 
             migrationBuilder.DropTable(
+                name: "UserAccounts");
+
+            migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "SubCategories");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
         }
     }
 }
