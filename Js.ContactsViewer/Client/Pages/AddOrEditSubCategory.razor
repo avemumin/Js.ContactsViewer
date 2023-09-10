@@ -1,46 +1,72 @@
-﻿@page "/addoreditsubcategory"
-@page "/addoreditsubcategory/{Id:int}"
-@inject NavigationManager _navigationManager
+﻿@page "/subcategory"
+@page "/subcategory/{Id:int}"
 @inject ISubCategoryService _subCategoryService
-<div>
-    <EditForm Model="subcategory"> 
-        <div>
-            <label for="subcategoryname"><strong>Nazwa:</strong></label>
-            <InputText id="subcategoryname" @bind-Value="subcategory.SubCatName" class="form-control" placeholder="podaj nazwę podkategorii" />
-        </div>
+@inject NavigationManager _navigationManager
 
-        <div>
-            <label for="subcategorydescription"><strong>Nazwa:</strong></label>
-            <InputText id="subcategorydescription" @bind-Value="subcategory.SubCatDescription" class="form-control" placeholder="dodaj opis" />
-        </div>
-    </EditForm>
-</div>
-<br />
-<div class="flex-row" style="margin:10px">
+@if (Id == null)
+{
+    <PageTitle>Dodaj podkategorię</PageTitle>
+    <h3>Utwórz:</h3>
+}
+else
+{
+    <PageTitle>Edytuj podkategorię</PageTitle>
+    <h3>Edycja:</h3>
+}
 
-    @* <button type="submit" class="btn btn-success" style="margin:10px" @onclick="(()=>(contact))">@btnText</button> *@
+<EditForm Model="SubCategory" OnSubmit="HandleSubmit">
+    <div>
+        <label for="subcatname"><strong>Nazwa:</strong></label>
+        <InputText id="subcatname" @bind-Value="SubCategory.SubCatName" class="form-control" placeholder="podaj nazwę podkategorii" />
+    </div>
+    <br />
+    <div>
+        <label for="subcatdescription"><strong>Opis:</strong></label>
+        <InputText id="subcatdescription" @bind-Value="SubCategory.SubCatDescription" class="form-control" placeholder="dodaj opis" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Zapisz</button>
+    <br />
+    <button type="button" class="btn-secondary" @onclick="GoBack">Wróć</button>
+</EditForm>
 
-  
-    <button type="button" class="btn btn-secondary" style="margin:10px" @onclick="GoBack">Wróć</button>
 
-</div>
+
 
 @code {
-    [Parameter]public int? Id { get; set; }
-    SubCategory subcategory = new SubCategory();
+    [Parameter] public int? Id { get; set; }
+    SubCategory SubCategory = new SubCategory();
 
 
     protected override async Task OnInitializedAsync()
     {
-        await _subCategoryService.GetSubCategoryById((int)Id);
-        if(_subCategoryService?.SubCategory != null)
+        if (Id == null)
         {
-            subcategory = _subCategoryService.SubCategory;
+            SubCategory = new SubCategory();
+        }
+        else
+        {
+            await _subCategoryService.GetSubCategoryById((int)Id);
+            if (_subCategoryService.SubCategory != null)
+                SubCategory = _subCategoryService.SubCategory;
+        }
+    }
+    async Task HandleSubmit()
+    {
+        if (Id == null)
+        {
+            await _subCategoryService.CreateSubCategory(SubCategory);
+            GoBack();
+        }
+        else
+        {
+            await _subCategoryService.UpdateSubCategory(SubCategory);
+            GoBack();
         }
     }
 
-    private void GoBack()
+    void GoBack()
     {
-        _navigationManager.NavigateTo("/dictionaries");
+        _navigationManager.NavigateTo("/subcategories");
     }
 }

@@ -1,0 +1,90 @@
+﻿@page "/categories"
+@inject ICategoryService _categoryService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Kategorie</PageTitle>
+<h3>Kategorie</h3>
+
+<div>
+    <button class="btn btn-secondary" @onclick="CreateSubCategory"><i class="oi oi-task"> Dodaj</i></button>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>#Edycja#</th>
+            <th>#Usuń#</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in CategoriesList)
+        {
+            <tr>
+                <td>@category.CategoryName</td>
+                <td>@category.CategoryDescription</td>
+                <td>
+                    <button class="btn btn-info" @onclick="(()=> EditSubcategory(category.Id))"><i class="oi oi-info"></i> </button>
+                </td>
+                <td>
+                    <button class="btn btn-danger" @onclick="(()=> RemoveSubcategory(category))"><i class="oi oi-delete"></i> </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<ChoiceComponent @ref="_choice" OnAccept="Accept" OnCancel="Cancel">
+    <div> Czy usunąć kategorię @_catToRemove.CategoryName ?</div>
+</ChoiceComponent>
+
+@code {
+    private List<Category> CategoriesList { get; set; } = new List<Category>();
+    ChoiceComponent _choice;
+    Category? _catToRemove;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _categoryService.GetCategories();
+        if (_categoryService?.Categories.Any() ?? false)
+        {
+            CategoriesList = _categoryService.Categories;
+        }
+    }
+    async Task RemoveSubcategory(Category category)
+    {
+        _catToRemove = category;
+        _choice?.Show();
+
+    }
+    void EditSubcategory(int id)
+    {
+        GoToPage(id);
+    }
+
+    void CreateSubCategory()
+    {
+        GoToPage();
+    }
+
+    private void GoToPage(int? id = null)
+    {
+        if (id == null)
+            _navigationManager.NavigateTo($"category/");
+        else
+            _navigationManager.NavigateTo($"category/{id}");
+    }
+
+    async Task Accept()
+    {
+        await _categoryService.DeleteCategory(_catToRemove.Id);
+        _choice.Hide();
+        _catToRemove = null;
+        _navigationManager.NavigateTo("/categories", true);
+    }
+    void Cancel()
+    {
+        _choice.Hide();
+        _catToRemove = null;
+    }
+}

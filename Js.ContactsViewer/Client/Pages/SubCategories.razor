@@ -1,0 +1,90 @@
+﻿@page "/subcategories"
+@inject ISubCategoryService _subCategoryService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Podkategorie</PageTitle>
+<h3>Podkategorie</h3>
+
+<div>
+    <button class="btn btn-secondary" @onclick="CreateSubCategory"><i class="oi oi-task"> Dodaj</i></button>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>#Edycja#</th>
+            <th>#Usuń#</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var subcategory in SubCategoriesList)
+        {
+            <tr>
+                <td>@subcategory.SubCatName</td>
+                <td>@subcategory.SubCatDescription</td>
+                <td>
+                    <button class="btn btn-info" @onclick="(()=> EditSubcategory(subcategory.Id))"><i class="oi oi-info"></i> </button>
+                </td>
+                <td>
+                    <button class="btn btn-danger" @onclick="(()=> RemoveSubcategory(subcategory))"><i class="oi oi-delete"></i> </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<ChoiceComponent @ref="_choice" OnAccept="Accept" OnCancel="Cancel">
+    <div> Czy usunąć podkategorię @_subCatToRemove.SubCatName ?</div>
+</ChoiceComponent>
+
+@code {
+    private List<SubCategory> SubCategoriesList { get; set; } = new List<SubCategory>();
+    ChoiceComponent _choice;
+    SubCategory? _subCatToRemove;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _subCategoryService.GetSubCategories();
+        if (_subCategoryService?.SubCategories.Any() ?? false)
+        {
+            SubCategoriesList = _subCategoryService.SubCategories;
+        }
+    }
+    async Task RemoveSubcategory(SubCategory subCat)
+    {
+        _subCatToRemove = subCat;
+        _choice?.Show();
+
+    }
+    void EditSubcategory(int id)
+    {
+        GoToPage(id);
+    }
+
+    void CreateSubCategory()
+    {
+        GoToPage();
+    }
+
+    private void GoToPage(int? id = null)
+    {
+        if (id == null)
+            _navigationManager.NavigateTo($"subcategory/");
+        else
+            _navigationManager.NavigateTo($"subcategory/{id}");
+    }
+
+    async Task Accept()
+    {
+        await _subCategoryService.DeleteSubCategory(_subCatToRemove.Id);
+        _choice.Hide();
+        _subCatToRemove = null;
+        _navigationManager.NavigateTo("/subcategories", true);
+    }
+    void Cancel()
+    {
+        _choice.Hide();
+        _subCatToRemove = null;
+    }
+}

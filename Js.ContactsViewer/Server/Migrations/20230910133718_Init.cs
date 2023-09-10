@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Js.ContactsViewer.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -82,9 +82,9 @@ namespace Js.ContactsViewer.Server.Migrations
                 columns: new[] { "Id", "CategoryDescription", "CategoryName", "CreatedOn" },
                 values: new object[,]
                 {
-                    { 1, "wszystko zwiazane z biznesem", "Business", new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8740) },
-                    { 2, "Twoje prywaty", "Private", new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8743) },
-                    { 3, "Gdy wybrane można utworzyć swoje widzi mi się", "Inne", new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8744) }
+                    { 1, "wszystko zwiazane z biznesem", "Business", new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1188) },
+                    { 2, "Twoje prywaty", "Private", new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1191) },
+                    { 3, "Gdy wybrane można utworzyć swoje widzi mi się", "Inne", new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1192) }
                 });
 
             migrationBuilder.InsertData(
@@ -92,8 +92,8 @@ namespace Js.ContactsViewer.Server.Migrations
                 columns: new[] { "Id", "CreatedOn", "IsManualyEditAvail", "SubCatDescription", "SubCatName" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8574), false, "Szef i wsio co z nim zwiazane", "Szef" },
-                    { 2, new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8630), false, "Co tam klient chciał", "Klient" }
+                    { 1, new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1027), false, "Szef i wsio co z nim zwiazane", "Szef" },
+                    { 2, new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1078), false, "Co tam klient chciał", "Klient" }
                 });
 
             migrationBuilder.InsertData(
@@ -101,8 +101,8 @@ namespace Js.ContactsViewer.Server.Migrations
                 columns: new[] { "Id", "BirthDay", "CategoryId", "CreatedOn", "Email", "LastName", "Name", "Password", "Phone", "SubCategoryId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1983, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8758), 1, new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8755), "john.doe@kukuryku.pl", "Doe", "John", "1234", "12345678", 1 },
-                    { 2, new DateTime(1981, 6, 19, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8766), 1, new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8765), "sabinka.doe@kukuryku.pl", "Doe", "Sabina", "sabina", "22233344", null }
+                    { 1, new DateTime(1983, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1208), 1, new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1205), "john.doe@kukuryku.pl", "Doe", "John", "1234", "12345678", 1 },
+                    { 2, new DateTime(1981, 6, 19, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1216), 1, new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1215), "sabinka.doe@kukuryku.pl", "Doe", "Sabina", "sabina", "22233344", null }
                 });
 
             migrationBuilder.CreateIndex(

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Js.ContactsViewer.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230910105919_Initial")]
-    partial class Initial
+    [Migration("20230910133718_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,21 +56,21 @@ namespace Js.ContactsViewer.Server.Migrations
                             Id = 1,
                             CategoryDescription = "wszystko zwiazane z biznesem",
                             CategoryName = "Business",
-                            CreatedOn = new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8740)
+                            CreatedOn = new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1188)
                         },
                         new
                         {
                             Id = 2,
                             CategoryDescription = "Twoje prywaty",
                             CategoryName = "Private",
-                            CreatedOn = new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8743)
+                            CreatedOn = new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1191)
                         },
                         new
                         {
                             Id = 3,
                             CategoryDescription = "Gdy wybrane można utworzyć swoje widzi mi się",
                             CategoryName = "Inne",
-                            CreatedOn = new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8744)
+                            CreatedOn = new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1192)
                         });
                 });
 
@@ -130,9 +130,9 @@ namespace Js.ContactsViewer.Server.Migrations
                         new
                         {
                             Id = 1,
-                            BirthDay = new DateTime(1983, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8758),
+                            BirthDay = new DateTime(1983, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1208),
                             CategoryId = 1,
-                            CreatedOn = new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8755),
+                            CreatedOn = new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1205),
                             Email = "john.doe@kukuryku.pl",
                             LastName = "Doe",
                             Name = "John",
@@ -143,9 +143,9 @@ namespace Js.ContactsViewer.Server.Migrations
                         new
                         {
                             Id = 2,
-                            BirthDay = new DateTime(1981, 6, 19, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8766),
+                            BirthDay = new DateTime(1981, 6, 19, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1216),
                             CategoryId = 1,
-                            CreatedOn = new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8765),
+                            CreatedOn = new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1215),
                             Email = "sabinka.doe@kukuryku.pl",
                             LastName = "Doe",
                             Name = "Sabina",
@@ -186,7 +186,7 @@ namespace Js.ContactsViewer.Server.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8574),
+                            CreatedOn = new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1027),
                             IsManualyEditAvail = false,
                             SubCatDescription = "Szef i wsio co z nim zwiazane",
                             SubCatName = "Szef"
@@ -194,7 +194,7 @@ namespace Js.ContactsViewer.Server.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2023, 9, 10, 12, 59, 19, 479, DateTimeKind.Local).AddTicks(8630),
+                            CreatedOn = new DateTime(2023, 9, 10, 15, 37, 18, 749, DateTimeKind.Local).AddTicks(1078),
                             IsManualyEditAvail = false,
                             SubCatDescription = "Co tam klient chciał",
                             SubCatName = "Klient"
