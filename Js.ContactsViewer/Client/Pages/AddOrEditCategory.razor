@@ -1,0 +1,72 @@
+﻿@page "/category"
+@page "/category/{Id:int}"
+@inject ICategoryService _categoryService
+@inject NavigationManager _navigationManager
+
+@if (Id == null)
+{
+    <PageTitle>Dodaj kategorię</PageTitle>
+    <h3>Utwórz:</h3>
+}
+else
+{
+    <PageTitle>Edytuj kategorię</PageTitle>
+    <h3>Edycja:</h3>
+}
+
+<EditForm Model="Category" OnSubmit="HandleSubmit">
+    <div>
+        <label for="categoryname"><strong>Nazwa:</strong></label>
+        <InputText id="categoryname" @bind-Value="Category.CategoryName" class="form-control" placeholder="podaj nazwę kategorii" />
+    </div>
+    <br />
+    <div>
+        <label for="categorydescription"><strong>Opis:</strong></label>
+        <InputText id="categorydescription" @bind-Value="Category.CategoryDescription" class="form-control" placeholder="dodaj opis" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Zapisz</button>
+    <br />
+    <button type="button" class="btn-secondary" @onclick="GoBack">Wróć</button>
+</EditForm>
+
+
+
+
+@code {
+    [Parameter] public int? Id { get; set; }
+    Category Category = new Category();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id == null)
+        {
+            Category = new Category();
+        }
+        else
+        {
+            await _categoryService.GetCategoryById((int)Id);
+            if (_categoryService.Category != null)
+                Category = _categoryService.Category;
+        }
+    }
+    async Task HandleSubmit()
+    {
+        if (Id == null)
+        {
+            await _categoryService.CreateCategory(Category);
+            GoBack();
+        }
+        else
+        {
+            await _categoryService.UpdateCategory(Category);
+            GoBack();
+        }
+    }
+
+    void GoBack()
+    {
+        _navigationManager.NavigateTo("/categories");
+    }
+}
