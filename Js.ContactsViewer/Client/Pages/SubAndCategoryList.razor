@@ -1,24 +1,58 @@
-﻿@page "/slowniki"
+﻿@page "/categorydictionary/{category:bool}"
 @inject ICategoryService _catService
+@inject ISubCategoryService _subCatService
+@inject NavigationManager _navigationManager
+@if (category)
+{
+    <PageTitle>Kategorie</PageTitle>
 
-<PageTitle>Dodaj słowniki</PageTitle>
- 
+    <div>
+        <CategoryDictionaryComponent Categories="CategoriesList" />
+    </div>
+}
+else
+{
+
+    <PageTitle>Podkategories</PageTitle>
+
+    <div>
+        <SubCategoryDictionaryComponent SubCategories="SubCategoriesList" />
+    </div>
+}
+<br />
 <div>
-    <DictionaryComponent Categories="CategoriesList" />
+    <button class="btn btn-secondary" @onclick="GoBack">Wróć</button>
 </div>
 
-
-
 @code {
-    
+    [Parameter] public bool category { get; set; } = true;
     public List<Category> CategoriesList { get; set; } = new List<Category>();
+    public List<SubCategory> SubCategoriesList { get; set; } = new List<SubCategory>();
     protected override async Task OnInitializedAsync()
     {
-        await _catService.GetCategories();
-        if(_catService?.Categories.Any() ?? false)
+        if (category)
         {
-            CategoriesList = _catService.Categories;
+            await _catService.GetCategories();
+            if (_catService?.Categories.Any() ?? false)
+            {
+                CategoriesList = _catService.Categories;
+
+            }
+        }
+        else
+        {
+            await _subCatService.GetSubCategories();
+            if (_subCatService?.SubCategories.Any() ?? false)
+            {
+                SubCategoriesList = _subCatService.SubCategories;
+
+            }
         }
     }
-    
+
+    void GoBack()
+    {
+        _navigationManager.NavigateTo("/dictionaries");
+    }
+
 }

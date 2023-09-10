@@ -1,0 +1,22 @@
+﻿@page "/dictionaries"
+@inject NavigationManager _navigationManager
+
+
+<div class="list-group">
+
+    <button type="button" @onclick="(()=> Categories())" class="list-group-item list-group-item-action">Słownik kategorii</button>
+    <button type="button" @onclick="(()=>SubCategories())" class="list-group-item list-group-item-action">Słownik podkategorii</button>
+
+</div>
+
+
+@code{
+    void Categories()
+    {
+        _navigationManager.NavigateTo($"/categorydictionary/{true}");
+    }
+    void SubCategories()
+    {
+        _navigationManager.NavigateTo($"/categorydictionary/{false}");
+    }
+}

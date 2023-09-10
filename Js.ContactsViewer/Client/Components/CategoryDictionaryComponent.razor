@@ -1,8 +1,8 @@
-﻿
+﻿@inject ICategoryService _categoryService
 <div>
     <GenericCollectionComponent MyCollection="Categories">
         <Element Context="category">
-            <SimpleDictionaryRecordComponent Category="category" DeleteCategory="DeleteSelectedCategory" />
+            <SimpleDictionaryRecordComponent IsCategoryContext="true" Category="category" DeleteCategory="DeleteSelectedCategory" />
         </Element>
     </GenericCollectionComponent>
 
@@ -16,8 +16,7 @@
     Category? _categoryToRemove;
 
     [Parameter] public List<Category> Categories { get; set; } = new List<Category>();
-    [Parameter] public List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
-
+    
     private async Task DeleteSelectedCategory(Category category)
     {
         _categoryToRemove = category;

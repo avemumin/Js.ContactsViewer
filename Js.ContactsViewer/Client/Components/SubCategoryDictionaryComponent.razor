@@ -1,0 +1,37 @@
+﻿@inject ISubCategoryService _subCategoryService
+<div>
+    <GenericCollectionComponent MyCollection="SubCategories">
+        <Element Context="subcategory">
+            <SimpleDictionaryRecordComponent IsCategoryContext="false" SubCategory="subcategory" DeleteSubCategory="DeleteSelectedCategory" />
+        </Element>
+    </GenericCollectionComponent>
+
+</div>
+<ChoiceComponent @ref="_choice" OnAccept="Accept" OnCancel="Cancel">
+    <div> Czy usunąć rekord @_subCategoryToRemove?.SubCatName ?</div>
+</ChoiceComponent>
+
+@code {
+    ChoiceComponent? _choice;
+    SubCategory? _subCategoryToRemove;
+
+    
+    [Parameter] public List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
+
+    private async Task DeleteSelectedCategory(SubCategory subCategory)
+    {
+        _subCategoryToRemove = subCategory;
+        _choice?.Show();
+    }
+    private void Accept()
+    {
+        //Categories.Remove(_categoryToRemove);
+        _choice?.Hide();
+        _subCategoryToRemove = null;
+    }
+    private void Cancel()
+    {
+        _choice?.Hide();
+        _subCategoryToRemove = null;
+    }
+}
